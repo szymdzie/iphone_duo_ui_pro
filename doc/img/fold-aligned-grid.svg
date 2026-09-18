@@ -35,9 +35,5 @@
     <rect x="664" y="312" width="100" height="68" rx="10"/><rect x="776" y="312" width="100" height="68" rx="10"/>
     <rect x="900" y="312" width="100" height="68" rx="10"/><rect x="1012" y="312" width="100" height="68" rx="10"/>
   </g>
-  <g stroke="#55616E" stroke-width="1" fill="none">
-    <path d="M876 404 h-0 M876 398 v12 M900 398 v12"/>
-    <path d="M876 404 h24"/>
-  </g>
   <text x="648" y="486" font-size="14" fill="#55616E">Columns are mirrored around the fold; folding grows only the middle gap.</text>
 </svg>

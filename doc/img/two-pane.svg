@@ -41,5 +41,6 @@
   <text x="954" y="224" font-size="12.5" fill="#0F6079">Alert</text>
   <g fill="#0F6079" opacity="0.45"><rect x="954" y="238" width="106" height="8" rx="4"/><rect x="954" y="254" width="80" height="8" rx="4"/></g>
   <rect x="1006" y="274" width="54" height="16" rx="8" fill="#0F6079"/>
-  <text x="750" y="402" font-size="13.5" fill="#55616E">Dialogs take the trailing half — and move there if you fold while one is open.</text>
+  <text x="750" y="402" font-size="13.5" fill="#55616E">Dialogs take the trailing half — and move there</text>
+  <text x="750" y="421" font-size="13.5" fill="#55616E">if you fold while one is open.</text>
 </svg>

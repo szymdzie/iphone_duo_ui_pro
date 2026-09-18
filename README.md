@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/hero.png" alt="iphone_duo_ui_pro - fold-aware Flutter widgets for iPhone Duo" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/hero.png" alt="iphone_duo_ui_pro - fold-aware Flutter widgets for iPhone Duo" width="100%">
 
 [![pub package](https://img.shields.io/pub/v/iphone_duo_ui_pro.svg)](https://pub.dev/packages/iphone_duo_ui_pro)
 [![license: MIT](https://img.shields.io/badge/license-MIT-0F6079.svg)](https://github.com/szymdzie/iphone_duo_ui_pro/blob/main/LICENSE)
@@ -50,7 +50,7 @@ the same code keeps working on a regular iPhone, on Android and in tests.
 
 ## Two panes, and dialogs that step aside
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/two-pane.png" alt="FoldAwareTwoPane in compact, flat and book poses, with a dialog anchored to the trailing half" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/two-pane.png" alt="FoldAwareTwoPane in compact, flat and book poses, with a dialog anchored to the trailing half" width="100%">
 
 ```dart
 FoldAwareTwoPane(
@@ -77,7 +77,7 @@ current fold would be captured by the route and end up in the wrong half.
 
 ## The vertical bar
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/vertical-bar.png" alt="DuoAdaptiveScaffold: horizontal bars on the inner display in portrait, a vertical bar on the outer display" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/vertical-bar.png" alt="DuoAdaptiveScaffold: horizontal bars on the inner display in portrait, a vertical bar on the outer display" width="100%">
 
 On the outer display, and on the inner display in landscape, the system moves toolbars, navigation
 and tab bars to the side. `DuoAdaptiveScaffold` follows: the same actions, in the order Apple
@@ -113,7 +113,7 @@ survive opening, closing and rotating the device.
 
 ## Grids aligned to the hinge
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/fold-aligned-grid.png" alt="A plain grid leaves a tile in the fold; FoldAlignedGrid mirrors columns around it" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/fold-aligned-grid.png" alt="A plain grid leaves a tile in the fold; FoldAlignedGrid mirrors columns around it" width="100%">
 
 An even column count is the usual advice, and it is enough when the content area is centred on the
 fold. Add a vertical bar on one side and the middle gap misses the hinge. `FoldAlignedGrid` plans

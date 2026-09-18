@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'iphone_duo_ui_pro'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Fold-aware Flutter widgets for iPhone Duo.'
   s.description      = <<-DESC
 Native bridge that reports iPhone Duo reserved regions, hinge state, UIKit size

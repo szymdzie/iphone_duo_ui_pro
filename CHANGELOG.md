@@ -1,3 +1,7 @@
+## 0.1.1
+
+* README: fixed a clipped caption in the two-pane diagram and pinned the diagrams to an immutable commit.
+
 ## 0.1.0
 
 First release.

@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 520" width="1200" height="520" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <rect width="1200" height="520" fill="#F1F4F8"/>
+  <text x="72" y="52" font-family="Menlo, monospace" font-size="22" font-weight="600" fill="#121A22">FoldAlignedGrid</text>
+  <text x="72" y="78" font-size="15" fill="#55616E">An even column count is not enough when the content area is not centred on the fold.</text>
+
+  <!-- left: naive grid -->
+  <text x="72" y="112" font-size="13" fill="#8A5310" letter-spacing="1">PLAIN GRID · A TILE SITS IN THE FOLD</text>
+  <rect x="72" y="124" width="480" height="330" rx="16" fill="#FFFFFF" stroke="#B6C2CF" stroke-width="2"/>
+  <rect x="306" y="124" width="12" height="330" fill="#0F6079" opacity="0.12"/>
+  <line x1="312" y1="124" x2="312" y2="454" stroke="#0F6079" stroke-width="2" stroke-dasharray="6 6"/>
+  <g>
+    <g fill="#E7EDF3">
+      <rect x="88" y="152" width="141" height="68" rx="10"/><rect x="394.7" y="152" width="141" height="68" rx="10"/>
+      <rect x="88" y="232" width="141" height="68" rx="10"/><rect x="394.7" y="232" width="141" height="68" rx="10"/>
+      <rect x="88" y="312" width="141" height="68" rx="10"/><rect x="394.7" y="312" width="141" height="68" rx="10"/>
+    </g>
+    <g fill="#F3E8D8" stroke="#8A5310" stroke-width="1.5">
+      <rect x="241.3" y="152" width="141" height="68" rx="10"/>
+      <rect x="241.3" y="232" width="141" height="68" rx="10"/>
+      <rect x="241.3" y="312" width="141" height="68" rx="10"/>
+    </g>
+  </g>
+  <text x="72" y="486" font-size="14" fill="#55616E">Three columns: the middle one is cut in half by the hinge.</text>
+
+  <!-- right: fold aligned -->
+  <text x="648" y="112" font-size="13" fill="#22614A" letter-spacing="1">FOLD-ALIGNED · EVERY TILE IN ONE REGION</text>
+  <rect x="648" y="124" width="480" height="330" rx="16" fill="#FFFFFF" stroke="#B6C2CF" stroke-width="2"/>
+  <rect x="882" y="124" width="12" height="330" fill="#0F6079" opacity="0.12"/>
+  <line x1="888" y1="124" x2="888" y2="454" stroke="#0F6079" stroke-width="2" stroke-dasharray="6 6"/>
+  <g fill="#DCE9EF" stroke="#0F6079" stroke-width="1.2">
+    <rect x="664" y="152" width="100" height="68" rx="10"/><rect x="776" y="152" width="100" height="68" rx="10"/>
+    <rect x="900" y="152" width="100" height="68" rx="10"/><rect x="1012" y="152" width="100" height="68" rx="10"/>
+    <rect x="664" y="232" width="100" height="68" rx="10"/><rect x="776" y="232" width="100" height="68" rx="10"/>
+    <rect x="900" y="232" width="100" height="68" rx="10"/><rect x="1012" y="232" width="100" height="68" rx="10"/>
+    <rect x="664" y="312" width="100" height="68" rx="10"/><rect x="776" y="312" width="100" height="68" rx="10"/>
+    <rect x="900" y="312" width="100" height="68" rx="10"/><rect x="1012" y="312" width="100" height="68" rx="10"/>
+  </g>
+  <g stroke="#55616E" stroke-width="1" fill="none">
+    <path d="M876 404 h-0 M876 398 v12 M900 398 v12"/>
+    <path d="M876 404 h24"/>
+  </g>
+  <text x="648" y="486" font-size="14" fill="#55616E">Columns are mirrored around the fold; folding grows only the middle gap.</text>
+</svg>

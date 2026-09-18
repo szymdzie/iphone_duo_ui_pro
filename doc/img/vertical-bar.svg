@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 560" width="1200" height="560" font-family="Helvetica Neue, Helvetica, Arial, sans-serif">
+  <rect width="1200" height="560" fill="#F1F4F8"/>
+  <text x="72" y="56" font-family="Menlo, monospace" font-size="22" font-weight="600" fill="#121A22">DuoAdaptiveScaffold</text>
+  <text x="72" y="82" font-size="15" fill="#55616E">The same actions and tabs, moved into the vertical bar when the display asks for it.</text>
+
+  <!-- A: inner display, portrait -->
+  <text x="72" y="126" font-size="13" fill="#55616E" letter-spacing="1">INNER DISPLAY · PORTRAIT</text>
+  <g>
+    <rect x="72" y="140" width="250" height="380" rx="18" fill="#FFFFFF" stroke="#B6C2CF" stroke-width="2"/>
+    <rect x="73" y="141" width="248" height="52" rx="17" fill="#DCE9EF"/>
+    <rect x="73" y="176" width="248" height="17" fill="#DCE9EF"/>
+    <text x="92" y="174" font-size="15" font-weight="600" fill="#121A22">Library</text>
+    <circle cx="258" cy="168" r="7" fill="#0F6079"/><circle cx="284" cy="168" r="7" fill="#0F6079"/>
+    <g fill="#E7EDF3">
+      <rect x="92" y="216" width="210" height="16" rx="8"/><rect x="92" y="244" width="180" height="16" rx="8"/>
+      <rect x="92" y="272" width="210" height="16" rx="8"/><rect x="92" y="300" width="150" height="16" rx="8"/>
+      <rect x="92" y="328" width="200" height="16" rx="8"/>
+    </g>
+    <circle cx="282" cy="420" r="22" fill="#0F6079"/>
+    <path d="M282 410 v20 M272 420 h20" stroke="#FFFFFF" stroke-width="2.5"/>
+    <rect x="73" y="458" width="248" height="61" rx="17" fill="#DCE9EF"/>
+    <rect x="73" y="458" width="248" height="20" fill="#DCE9EF"/>
+    <g fill="#0F6079"><circle cx="133" cy="482" r="8"/><circle cx="197" cy="482" r="8"/><circle cx="261" cy="482" r="8"/></g>
+    <g font-size="10" fill="#55616E" text-anchor="middle"><text x="133" y="505">Library</text><text x="197" y="505">Grid</text><text x="261" y="505">Bridge</text></g>
+  </g>
+
+  <!-- B: outer display / landscape -->
+  <text x="392" y="126" font-size="13" fill="#55616E" letter-spacing="1">OUTER DISPLAY · LANDSCAPE</text>
+  <g>
+    <rect x="392" y="140" width="420" height="300" rx="18" fill="#FFFFFF" stroke="#B6C2CF" stroke-width="2"/>
+    <rect x="744" y="141" width="67" height="298" rx="17" fill="#DCE9EF"/>
+    <rect x="744" y="141" width="20" height="298" fill="#DCE9EF"/>
+    <g fill="#E7EDF3">
+      <rect x="416" y="176" width="300" height="16" rx="8"/><rect x="416" y="204" width="260" height="16" rx="8"/>
+      <rect x="416" y="232" width="300" height="16" rx="8"/><rect x="416" y="260" width="220" height="16" rx="8"/>
+      <rect x="416" y="288" width="290" height="16" rx="8"/><rect x="416" y="316" width="180" height="16" rx="8"/>
+    </g>
+    <g stroke="#0F6079" stroke-width="2.5" fill="none">
+      <path d="M783 168 l-8 -8 l8 -8"/>
+    </g>
+    <circle cx="777" cy="196" r="13" fill="#0F6079"/>
+    <path d="M777 189 v14 M770 196 h14" stroke="#FFFFFF" stroke-width="2.2"/>
+    <g fill="#0F6079"><circle cx="777" cy="232" r="8"/><circle cx="777" cy="262" r="8"/></g>
+    <circle cx="777" cy="338" r="8" fill="#0F6079"/>
+    <g fill="#0F6079"><circle cx="772" cy="292" r="2.4"/><circle cx="777" cy="292" r="2.4"/><circle cx="782" cy="292" r="2.4"/></g>
+    <line x1="760" y1="362" x2="795" y2="362" stroke="#B6C2CF" stroke-width="1.5"/>
+    <g fill="#0F6079"><circle cx="777" cy="382" r="7"/><circle cx="777" cy="404" r="7"/><circle cx="777" cy="426" r="7"/></g>
+    <text x="392" y="464" font-size="13" fill="#55616E">The bar is aligned to the hardware, so it stays on the same side in RTL.</text>
+  </g>
+
+  <!-- legend -->
+  <g font-size="14" fill="#121A22">
+    <text x="872" y="176" font-size="13" fill="#55616E" letter-spacing="1">ORDER IN THE BAR</text>
+    <text x="872" y="206">1 · Back / Close</text>
+    <text x="872" y="232">2 · Prominent action</text>
+    <text x="872" y="258">3 · Top actions, by priority</text>
+    <text x="872" y="284">4 · Overflow menu</text>
+    <text x="872" y="310">5 · Spacer</text>
+    <text x="872" y="336">6 · Bottom actions</text>
+    <text x="872" y="362">7 · Tab bar</text>
+    <text x="872" y="400" font-size="13" fill="#55616E">Every action carries an icon and a label,</text>
+    <text x="872" y="420" font-size="13" fill="#55616E">so it reads the same in the overflow menu.</text>
+  </g>
+</svg>

@@ -1,0 +1,33 @@
+name: iphone_duo_ui_pro
+description: >-
+  Fold-aware Flutter widgets for iPhone Duo: the hinge as a DisplayFeature,
+  vertical bars, size classes, two-pane layouts and fold-aligned grids, fed by
+  a native iOS bridge.
+version: 0.1.0
+repository: https://github.com/szymdzie/iphone_duo_ui_pro
+issue_tracker: https://github.com/szymdzie/iphone_duo_ui_pro/issues
+topics:
+  - foldable
+  - ios
+  - layout
+  - adaptive
+  - responsive
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: DuoBridge

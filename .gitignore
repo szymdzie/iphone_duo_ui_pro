@@ -1,0 +1,14 @@
+.DS_Store
+.dart_tool/
+.packages
+build/
+pubspec.lock
+doc/api/
+
+# iOS / CocoaPods
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Flutter.framework
+ios/Flutter/Flutter.podspec
+**/*.xcworkspace/xcuserdata/
+**/xcuserdata/

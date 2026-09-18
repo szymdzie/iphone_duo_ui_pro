@@ -1,0 +1,15 @@
+.DS_Store
+.dart_tool/
+.packages
+build/
+pubspec.lock
+doc/
+.github/
+ios/Pods/
+ios/.symlinks/
+example/.dart_tool/
+example/build/
+example/ios/Pods/
+example/ios/.symlinks/
+example/ios/Flutter/ephemeral/
+example/*.iml

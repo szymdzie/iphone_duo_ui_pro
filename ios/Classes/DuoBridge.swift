@@ -6,7 +6,7 @@
 // Build flag:
 //  * Xcode 27.1+: add DUO_SDK_27_1 to SWIFT_ACTIVE_COMPILATION_CONDITIONS for this pod to enable
 //    reserved regions, the vertical bar edge and the hinge (see README.md). Those call sites come
-//    from Apple's iPhone Duo Tech Talk code and stay marked VERIFY(27.1 SDK) until the SDK ships.
+//    from Apple's iPhone Duo Tech Talk code and were verified against the iOS 27.1 SDK.
 //
 // Channels:
 //  * EventChannel  "iphone_duo/environment" - environment state maps (DuoEnvironment.fromMap in Dart).
@@ -167,7 +167,7 @@ enum DuoPayload {
     static func uikitVerticalBarEdge(of host: UIViewController) -> String {
         #if DUO_SDK_27_1
         if #available(iOS 27.1, *) {
-            // VERIFY(27.1 SDK): trait from the "Raise the bar with iPhone Duo" Tech Talk (kept as text).
+            // Verified against the iOS 27.1 SDK (compiled and observed on the simulator): trait from the "Raise the bar with iPhone Duo" Tech Talk (kept as text).
             return String(describing: host.traitCollection.verticalBarEdge)
         }
         #endif
@@ -260,7 +260,7 @@ struct DuoProbe271: View {
 
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.verticalSizeClass) private var verticalSizeClass
-    // VERIFY(27.1 SDK): environment value from the "Raise the bar with iPhone Duo" Tech Talk.
+    // Verified against the iOS 27.1 SDK (compiled and observed on the simulator): environment value from the "Raise the bar with iPhone Duo" Tech Talk.
     @Environment(\.toolbarVerticalEdge) private var toolbarVerticalEdge
 
     @State private var size: CGSize = .zero
@@ -271,7 +271,7 @@ struct DuoProbe271: View {
 
     var body: some View {
         GeometryReader { proxy in
-            // VERIFY(27.1 SDK): calls from the "Strike a pose with adaptive layouts on iPhone Duo" Tech Talk.
+            // Verified against the iOS 27.1 SDK (compiled and observed on the simulator): calls from the "Strike a pose with adaptive layouts on iPhone Duo" Tech Talk.
             let snapshot = DuoRegionsSnapshot(
                 activeDivisions: proxy.reservedRegions(kind: .division).map { DuoRect($0.frame) },
                 allDivisions: proxy.reservedRegions(kind: .division, options: .includeInactive).map { DuoRect($0.frame) },
@@ -289,7 +289,7 @@ struct DuoProbe271: View {
         }
         .ignoresSafeArea()
         .allowsHitTesting(false)
-        // VERIFY(27.1 SDK): modifier from the "Leverage multiple displays and scenes on iPhone Duo" Tech Talk.
+        // Verified against the iOS 27.1 SDK (compiled and observed on the simulator): modifier from the "Leverage multiple displays and scenes on iPhone Duo" Tech Talk.
         .onHingeChange { _, context in
             if let hinge = context.hinge {
                 hasHinge = true

@@ -244,9 +244,10 @@ xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Debug
 
 ## Sources
 
-Built from Apple's iPhone Duo material: the six Tech Talks (*Get ready for iPhone Duo*, *Strike a
-pose with adaptive layouts*, *Raise the bar*, *Leverage multiple displays and scenes*, *Update your
-camera app*, *Design for iPhone Duo*) and the *Designing for iPhone Duo* Human Interface Guidelines.
+Built from Apple's iPhone Duo material: the six Tech Talks (*Prepare your app for iPhone Duo*, *Design
+for iPhone Duo*, *Raise the bar with iPhone Duo*, *Strike a pose with adaptive layouts on iPhone Duo*,
+*Leverage multiple displays and scenes on iPhone Duo*, *Build a great camera experience for iPhone
+Duo*), the articles *Preparing your app for iPhone Duo* and *Choosing a camera by the direction it faces*, and the *Designing for iPhone Duo* Human Interface Guidelines.
 
 ## Author
 

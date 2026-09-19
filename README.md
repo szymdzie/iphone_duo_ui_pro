@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/hero.png" alt="iphone_duo_ui_pro - fold-aware Flutter widgets for iPhone Duo" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/hero.png" alt="iphone_duo_ui_pro - fold-aware Flutter widgets for iPhone Duo" width="100%">
 
 [![pub package](https://img.shields.io/pub/v/iphone_duo_ui_pro.svg)](https://pub.dev/packages/iphone_duo_ui_pro)
 [![license: MIT](https://img.shields.io/badge/license-MIT-0F6079.svg)](https://github.com/szymdzie/iphone_duo_ui_pro/blob/main/LICENSE)
@@ -31,7 +31,7 @@ flutter pub add iphone_duo_ui_pro
 ## Setup
 
 Requires **Flutter 3.38+** and an app on the **UIScene life cycle** — apps built against the iOS 27
-SDK without it do not launch at all. Minimum deployment target is iOS 13; every iPhone Duo API is
+SDK without it do not launch at all. Minimum deployment target is iOS 15; every iPhone Duo API is
 guarded by availability checks.
 
 ```dart
@@ -50,7 +50,7 @@ the same code keeps working on a regular iPhone, on Android and in tests.
 
 ## Two panes, and dialogs that step aside
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/two-pane.png" alt="FoldAwareTwoPane in compact, flat and book poses, with a dialog anchored to the trailing half" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/two-pane.png" alt="FoldAwareTwoPane in compact, flat and book poses, with a dialog anchored to the trailing half" width="100%">
 
 ```dart
 FoldAwareTwoPane(
@@ -77,7 +77,7 @@ current fold would be captured by the route and end up in the wrong half.
 
 ## The vertical bar
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/vertical-bar.png" alt="DuoAdaptiveScaffold: horizontal bars on the inner display in portrait, a vertical bar on the outer display" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/vertical-bar.png" alt="DuoAdaptiveScaffold: horizontal bars on the inner display in portrait, a vertical bar on the outer display" width="100%">
 
 On the outer display, and on the inner display in landscape, the system moves toolbars, navigation
 and tab bars to the side. `DuoAdaptiveScaffold` follows: the same actions, in the order Apple
@@ -106,14 +106,21 @@ DuoAdaptiveScaffold(
 );
 ```
 
-Two details worth knowing. A floating action button is only shown in the horizontal layout — in the
+On iPhone Duo the status bar and the camera live in an 84 pt safe-area inset along the bar edge,
+and the system draws its own bars inside that column. The scaffold does the same: the bar takes the
+column, starts below the status and camera region (the bridge reports it as an occlusion), stops
+above the home indicator, and centres its items on the status bar axis, 48 pt from the edge. Content
+is not inset twice. Without a system column — a regular iPhone, a test — the bar keeps its own 64 pt
+inside the safe area.
+
+Two more details worth knowing. A floating action button is only shown in the horizontal layout — in the
 vertical bar its role is taken by `prominentAction`, which is why the scaffold asserts you passed
 one. And the body travels between layouts under a `GlobalKey`, so scroll offsets and text fields
 survive opening, closing and rotating the device.
 
 ## Grids aligned to the hinge
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/2ecf7f81ee20b745ccdcaaf602453ec933628c39/doc/img/fold-aligned-grid.png" alt="A plain grid leaves a tile in the fold; FoldAlignedGrid mirrors columns around it" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/fold-aligned-grid.png" alt="A plain grid leaves a tile in the fold; FoldAlignedGrid mirrors columns around it" width="100%">
 
 An even column count is the usual advice, and it is enough when the content area is centred on the
 fold. Add a vertical bar on one side and the middle gap misses the hinge. `FoldAlignedGrid` plans
@@ -165,10 +172,9 @@ Without the flag the bridge still reports size classes and the view size, so `Du
 and `FoldAwareTwoPane` keep working; folds simply never appear. On Android, `displayFeatures` comes
 from Flutter itself, so `FoldAlignedGrid` works there with no bridge at all.
 
-**Honest status:** the 27.1 call sites are transcribed from Apple's iPhone Duo Tech Talks and are
-marked `VERIFY(27.1 SDK)` in the source. They have not been compiled against a shipping 27.1 SDK
-yet. Everything else — layout, bar planning, anchors, grids — is covered by the test suite and runs
-today.
+**Status:** the bridge compiles against the iOS 27.1 SDK (Xcode 27.1) with the flag on and no
+warnings, and every value below was observed on the iPhone Duo simulator through Device Hub. A
+physical device has not been tested yet.
 
 ## Testing without the device
 
@@ -193,7 +199,7 @@ await tester.pumpWidget(
 );
 ```
 
-The package ships 28 tests built this way, covering both poses, RTL, Split View halves, overflow
+The package ships 30 tests built this way, covering both poses, RTL, Split View halves, overflow
 priorities and state preservation across layout switches.
 
 ## Configurations at a glance
@@ -206,9 +212,30 @@ priorities and state preservation across layout switches.
 | Inner display, landscape | regular × regular | vertical | two |
 | Half open (book pose) | regular × regular | as above | split on the fold |
 
-Screen sizes for the record: the outer display is 466 × 678 pt, the inner one 669 × 951 pt — derived
-from the App Store Connect screenshot specification, useful for previews and tests, never for
-hard-coding layout.
+Measured on the simulator, for previews and tests — never for hard-coding layout:
+
+| | Outer display | Inner display (landscape) |
+| --- | --- | --- |
+| Size | 466 × 678 pt | 951 × 669 pt |
+| Safe area | right 84, bottom 34 | right 84, bottom 34 |
+| Status region in the column | 84 × 170 pt | 84 × 120 pt |
+| Fold | — | 40 pt wide, centred (455.5 – 495.5) |
+| Status bar axis | 48 pt from the edge | 48 pt from the edge |
+
+## Building with Xcode 27.1
+
+Two things bite today. Xcode 27.1 rejects deployment targets below iOS 15, so raise
+`IPHONEOS_DEPLOYMENT_TARGET` in the Runner project and force it for pods in `post_install`. And
+Flutter 3.38's `flutter build ios --simulator` stops at "does not contain architectures" because the
+new `lipo` prints them in a different order; building one architecture avoids it:
+
+```sh
+xcodebuild -workspace ios/Runner.xcworkspace -scheme Runner -configuration Debug \
+  -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone Duo' \
+  ARCHS=arm64 ONLY_ACTIVE_ARCH=YES CODE_SIGNING_ALLOWED=NO build
+```
+
+`example/ios/Podfile` shows both settings.
 
 ## Sources
 

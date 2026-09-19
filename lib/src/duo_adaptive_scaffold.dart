@@ -10,6 +10,8 @@
 //   or the tab bar first (task-based). The bar stays inside the safe area, clear of the status bar column.
 // Content state (scroll offset, fields) survives the switch between the horizontal and vertical layouts.
 
+import 'dart:math' as math;
+
 import 'package:flutter/material.dart';
 
 import 'duo_environment.dart';
@@ -168,6 +170,15 @@ class DuoAdaptiveScaffold extends StatefulWidget {
 
   /// Width of the vertical bar, including padding.
   static const double barWidth = 64;
+
+  /// A safe-area inset at least this wide on the bar edge is treated as the
+  /// system column (status bar and camera); the bar then moves into it.
+  static const double minSystemColumnWidth = 56;
+
+  /// Distance from the physical edge to the axis the system centres its status
+  /// bar glyphs on: 143.5 px at 3x, measured to the pixel on both displays of
+  /// the iOS 27.1 simulator. It coincides with the centre of the outer camera.
+  static const double systemColumnAxisFromEdge = 143.5 / 3;
 
   /// The content of the screen.
   final Widget body;
@@ -350,27 +361,71 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
   Widget _buildVertical(BuildContext context, Widget body) {
     final edge = DuoAdaptiveScaffold.resolveEdge(context);
     final appDirection = Directionality.of(context);
+    final media = MediaQuery.of(context);
+    final environment = DuoScope.of(context);
     final leading = widget.leading;
     final prominentAction = widget.prominentAction;
 
+    // The system column: on iPhone Duo the status bar and the camera live in a
+    // safe-area inset along the bar edge (84 pt on both displays). The system
+    // draws its own bars inside that column, so the scaffold does the same:
+    // the bar takes the column and starts below the status/camera region,
+    // which the bridge reports as an occlusion. Without a column (a regular
+    // iPhone, tests) the bar keeps its own width inside the safe area.
+    final columnInset = edge == DuoBarEdge.left
+        ? media.padding.left
+        : media.padding.right;
+    final inSystemColumn =
+        columnInset >= DuoAdaptiveScaffold.minSystemColumnWidth;
+    final columnWidth = inSystemColumn
+        ? columnInset
+        : DuoAdaptiveScaffold.barWidth;
+    var topClearance = inSystemColumn ? media.padding.top : 0.0;
+    if (inSystemColumn) {
+      for (final occlusion in environment.occlusions) {
+        final rect = occlusion.rect;
+        final overlapsColumn = edge == DuoBarEdge.left
+            ? rect.left < columnWidth
+            : rect.right > media.size.width - columnWidth;
+        if (overlapsColumn && rect.top <= topClearance + 1) {
+          topClearance = math.max(topClearance, rect.bottom);
+        }
+      }
+    }
+    final bottomClearance = inSystemColumn ? media.padding.bottom : 0.0;
+
+    // The system centres its status bar glyphs 48 pt from the physical edge on
+    // both displays (measured to the pixel on the iOS 27.1 simulator), not on
+    // the middle of the 84 pt column, so the bar items share that axis.
+    final axisFromEdge = inSystemColumn
+        ? DuoAdaptiveScaffold.systemColumnAxisFromEdge
+        : columnWidth / 2;
+    final half = DuoAdaptiveScaffold.itemExtent / 2;
+    final edgePad = math.max(0.0, axisFromEdge - half);
+    final innerPad = math.max(0.0, columnWidth - axisFromEdge - half);
+
     final bar = SizedBox(
-      width: DuoAdaptiveScaffold.barWidth,
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          final plan = DuoAdaptiveScaffold.planVerticalBar(
-            availableHeight: constraints.maxHeight,
-            fixedTopCount:
-                (leading != null ? 1 : 0) + (prominentAction != null ? 1 : 0),
-            topActions: widget.topActions,
-            bottomActions: widget.bottomActions,
-            tabCount: widget.tabs.length,
-            compression: widget.compression,
-          );
-          return Padding(
-            padding: const EdgeInsets.symmetric(
-              vertical: DuoAdaptiveScaffold.barPadding,
-            ),
-            child: Column(
+      width: columnWidth,
+      child: Padding(
+        padding: EdgeInsets.only(
+          top: topClearance + DuoAdaptiveScaffold.barPadding,
+          bottom: bottomClearance + DuoAdaptiveScaffold.barPadding,
+          left: edge == DuoBarEdge.left ? edgePad : innerPad,
+          right: edge == DuoBarEdge.left ? innerPad : edgePad,
+        ),
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            final plan = DuoAdaptiveScaffold.planVerticalBar(
+              availableHeight:
+                  constraints.maxHeight + 2 * DuoAdaptiveScaffold.barPadding,
+              fixedTopCount:
+                  (leading != null ? 1 : 0) + (prominentAction != null ? 1 : 0),
+              topActions: widget.topActions,
+              bottomActions: widget.bottomActions,
+              tabCount: widget.tabs.length,
+              compression: widget.compression,
+            );
+            return Column(
               children: [
                 if (leading != null) _DuoBarButton(action: leading),
                 if (prominentAction != null)
@@ -399,9 +454,9 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
                     ),
                 ],
               ],
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
 
@@ -416,23 +471,33 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
 
     final barSide = Directionality(textDirection: appDirection, child: bar);
     final contentSide = Expanded(
-      child: Directionality(textDirection: appDirection, child: content),
+      child: Directionality(
+        textDirection: appDirection,
+        // The bar owns the inset on its edge; the content keeps the others.
+        child: inSystemColumn
+            ? SafeArea(
+                left: edge != DuoBarEdge.left,
+                right: edge != DuoBarEdge.right,
+                child: content,
+              )
+            : content,
+      ),
+    );
+
+    final row = Directionality(
+      // Physical order: the bar is aligned to the hardware regardless of RTL.
+      textDirection: TextDirection.ltr,
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: edge == DuoBarEdge.left
+            ? [barSide, contentSide]
+            : [contentSide, barSide],
+      ),
     );
 
     return Scaffold(
       backgroundColor: widget.backgroundColor,
-      body: SafeArea(
-        child: Directionality(
-          // Physical order: the bar is aligned to the hardware regardless of RTL.
-          textDirection: TextDirection.ltr,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: edge == DuoBarEdge.left
-                ? [barSide, contentSide]
-                : [contentSide, barSide],
-          ),
-        ),
-      ),
+      body: inSystemColumn ? row : SafeArea(child: row),
     );
   }
 

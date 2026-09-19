@@ -3,7 +3,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'iphone_duo_ui_pro'
-  s.version          = '0.1.1'
+  s.version          = '0.2.0'
   s.summary          = 'Fold-aware Flutter widgets for iPhone Duo.'
   s.description      = <<-DESC
 Native bridge that reports iPhone Duo reserved regions, hinge state, UIKit size
@@ -15,7 +15,7 @@ classes and the vertical bar edge to Flutter.
   s.source           = { :path => '.' }
   s.source_files     = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.platform         = :ios, '13.0'
+  s.platform         = :ios, '15.0'
   s.swift_version    = '5.0'
 
   # iPhone Duo APIs ship with the iOS 27.1 SDK. Until every build machine has

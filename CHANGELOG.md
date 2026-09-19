@@ -1,3 +1,19 @@
+## 0.2.0
+
+Verified on the iPhone Duo simulator (iOS 27.1, Xcode 27.1).
+
+* The native bridge compiles against the iOS 27.1 SDK with `DUO_SDK_27_1` and no warnings; reserved
+  regions, the hinge, size classes and the vertical bar edge were all observed at run time.
+* `DuoAdaptiveScaffold`: the vertical bar now lives in the system column, the 84 pt safe-area inset
+  the status bar occupies. It starts below the status/camera region (reported as an occlusion),
+  ends above the home indicator, and its items share the status bar axis, 48 pt from the edge.
+  Content is no longer inset twice and gains the width of the column.
+* `DuoEnvironment.copyWith`.
+* **Breaking:** the iOS deployment target is 15.0. Xcode 27.1 rejects anything lower.
+* Example: UIScene life cycle, `DUO_SDK_27_1` enabled in the Podfile, and a Bridge tab that shows
+  and logs the live environment.
+* Tests use the measured geometry: a 40 pt fold, the 84 pt system column, 34 pt home indicator.
+
 ## 0.1.1
 
 * README: fixed a clipped caption in the two-pane diagram and pinned the diagrams to an immutable commit.

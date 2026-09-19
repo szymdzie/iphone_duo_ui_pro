@@ -1,9 +1,10 @@
 // Tests for the iPhone Duo widgets.
 //
-// Sizes in points: the App Store Connect screenshot spec divided by 3
-// (outer 1398x2034 px -> 466x678 pt, inner 2007x2853 px -> 669x951 pt).
-// The fold position (screen centre, 16 pt wide) is a test assumption; confirm it in Device Hub
-// once Xcode 27.1 is available.
+// Geometry measured on the iPhone Duo simulator (iOS 27.1, Xcode 27.1):
+// outer display 466x678 pt, inner display 951x669 pt in landscape; the fold is
+// 40 pt wide and centred (455.5..495.5); the system column on the bar edge is
+// an 84 pt safe-area inset whose status/camera region is an occlusion of
+// 84x170 pt (outer) or 84x120 pt (inner); the home indicator adds 34 pt.
 // See README.md for the full source list.
 
 import 'dart:ui' show DisplayFeatureState, DisplayFeatureType;
@@ -17,11 +18,37 @@ const Size innerPortrait = Size(669, 951);
 const Size outerPortrait = Size(466, 678);
 const Size outerLandscape = Size(678, 466);
 
-/// Centre of the inner display and the assumed width of an active fold.
+/// Centre of the inner display and the measured width of an active fold.
 const double foldCenter = 475.5;
-const double foldWidth = 16;
-const double foldStart = foldCenter - foldWidth / 2; // 467.5
-const double foldEnd = foldCenter + foldWidth / 2; // 483.5
+const double foldWidth = 40;
+const double foldStart = foldCenter - foldWidth / 2; // 455.5
+const double foldEnd = foldCenter + foldWidth / 2; // 495.5
+
+/// The system column measured on the simulator: safe-area inset on the bar
+/// edge, home indicator, and the status/camera occlusion at the column's top.
+const double systemColumn = 84;
+const double homeIndicator = 34;
+const EdgeInsets duoInsets = EdgeInsets.only(
+  right: systemColumn,
+  bottom: homeIndicator,
+);
+
+/// Outer display, closed: camera circle plus the status region.
+const List<DuoRegion> outerOcclusions = [
+  DuoRegion(rect: Rect.fromLTWH(400, 29, 37, 37), active: true),
+  DuoRegion(rect: Rect.fromLTWH(382, 0, 84, 170), active: true),
+];
+
+/// Inner display, landscape: the status region only (camera inactive).
+const List<DuoRegion> innerOcclusions = [
+  DuoRegion(rect: Rect.fromLTWH(867, 0, 84, 120), active: true),
+];
+
+/// Wraps [child] in the MediaQuery an iPhone Duo reports above the scaffold.
+Widget withDuoInsets(Size size, Widget child) => MediaQuery(
+  data: MediaQueryData(size: size, padding: duoInsets, viewPadding: duoInsets),
+  child: child,
+);
 
 /// Inner display in landscape: a vertical fold (book pose when [active]).
 DuoEnvironment foldEnvironment({required bool active}) => DuoEnvironment(
@@ -745,5 +772,88 @@ void main() {
         ); // the prominent action in the vertical bar
       },
     );
+
+    testWidgets('outer display: the bar moves into the system column', (
+      tester,
+    ) async {
+      setLogicalSize(tester, outerPortrait);
+      const environment = DuoEnvironment(
+        isAvailable: true,
+        sdk271: true,
+        size: outerPortrait,
+        horizontalSizeClass: DuoSizeClass.compact,
+        verticalSizeClass: DuoSizeClass.regular,
+        toolbarVerticalEdgeRaw: 'Optional(SwiftUI.HorizontalEdge.trailing)',
+        occlusions: outerOcclusions,
+        hinge: DuoHinge(status: DuoHingeStatus.closed, angleDegrees: 0),
+      );
+      await tester.pumpWidget(
+        duoApp(
+          environment,
+          home: withDuoInsets(
+            outerPortrait,
+            DuoAdaptiveScaffold(
+              title: 'Library',
+              prominentAction: DuoBarAction(
+                icon: Icons.add,
+                label: 'Add',
+                onPressed: () {},
+              ),
+              tabs: const [
+                DuoTab(icon: Icons.photo, label: 'Library'),
+                DuoTab(icon: Icons.grid_view, label: 'Grid'),
+              ],
+              body: const SizedBox.expand(key: Key('body')),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      // Items share the status bar axis, 48 pt from the edge, below the
+      // status/camera region and above the home indicator.
+      final add = tester.getRect(find.byTooltip('Add'));
+      expect(add.center.dx, closeTo(466 - 48, 0.5));
+      expect(add.top, greaterThanOrEqualTo(170));
+      final grid = tester.getRect(find.byTooltip('Grid'));
+      expect(grid.bottom, lessThanOrEqualTo(678 - 34));
+      // The content is not inset twice: it runs up to the column.
+      expect(
+        tester.getRect(find.byKey(const Key('body'))).right,
+        closeTo(382, 0.5),
+      );
+    });
+
+    testWidgets('inner display: the bar follows the shorter status region', (
+      tester,
+    ) async {
+      setLogicalSize(tester, innerLandscape);
+      final environment = foldEnvironment(active: false).copyWith(
+        toolbarVerticalEdgeRaw: 'Optional(SwiftUI.HorizontalEdge.trailing)',
+        occlusions: innerOcclusions,
+      );
+      await tester.pumpWidget(
+        duoApp(
+          environment,
+          home: withDuoInsets(
+            innerLandscape,
+            DuoAdaptiveScaffold(
+              prominentAction: DuoBarAction(
+                icon: Icons.add,
+                label: 'Add',
+                onPressed: () {},
+              ),
+              body: const SizedBox.expand(),
+            ),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      final add = tester.getRect(find.byTooltip('Add'));
+      expect(add.center.dx, closeTo(951 - 143.5 / 3, 0.01));
+      expect(add.top, greaterThanOrEqualTo(120));
+      expect(add.top, lessThan(170));
+    });
   });
 }

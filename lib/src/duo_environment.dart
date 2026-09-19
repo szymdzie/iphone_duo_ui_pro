@@ -197,6 +197,35 @@ class DuoEnvironment {
     );
   }
 
+  /// Returns a copy with the given fields replaced.
+  DuoEnvironment copyWith({
+    bool? isAvailable,
+    bool? sdk271,
+    Size? size,
+    DuoSizeClass? horizontalSizeClass,
+    DuoSizeClass? verticalSizeClass,
+    String? toolbarVerticalEdgeRaw,
+    String? uikitVerticalBarEdgeRaw,
+    List<DuoRegion>? divisions,
+    List<DuoRegion>? occlusions,
+    DuoHinge? hinge,
+  }) {
+    return DuoEnvironment(
+      isAvailable: isAvailable ?? this.isAvailable,
+      sdk271: sdk271 ?? this.sdk271,
+      size: size ?? this.size,
+      horizontalSizeClass: horizontalSizeClass ?? this.horizontalSizeClass,
+      verticalSizeClass: verticalSizeClass ?? this.verticalSizeClass,
+      toolbarVerticalEdgeRaw:
+          toolbarVerticalEdgeRaw ?? this.toolbarVerticalEdgeRaw,
+      uikitVerticalBarEdgeRaw:
+          uikitVerticalBarEdgeRaw ?? this.uikitVerticalBarEdgeRaw,
+      divisions: divisions ?? this.divisions,
+      occlusions: occlusions ?? this.occlusions,
+      hinge: hinge ?? this.hinge,
+    );
+  }
+
   /// The bridge delivered data.
   final bool isAvailable;
 

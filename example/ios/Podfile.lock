@@ -1,0 +1,22 @@
+PODS:
+  - Flutter (1.0.0)
+  - iphone_duo_ui_pro (0.1.1):
+    - Flutter
+
+DEPENDENCIES:
+  - Flutter (from `Flutter`)
+  - iphone_duo_ui_pro (from `.symlinks/plugins/iphone_duo_ui_pro/ios`)
+
+EXTERNAL SOURCES:
+  Flutter:
+    :path: Flutter
+  iphone_duo_ui_pro:
+    :path: ".symlinks/plugins/iphone_duo_ui_pro/ios"
+
+SPEC CHECKSUMS:
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  iphone_duo_ui_pro: 7ff5280f73c085b4c7bb60e5d23dc478d926e712
+
+PODFILE CHECKSUM: 2ab961ca1b9a7179a09b1f05ed26df36616b4fcf
+
+COCOAPODS: 1.16.2

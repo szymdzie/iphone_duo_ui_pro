@@ -11,6 +11,11 @@ void main() => runApp(const DuoGalleryApp());
 
 const Color _seed = Color(0xFF0F6079);
 
+/// MediaQuery as seen above the scaffold (before SafeArea consumes it).
+final ValueNotifier<MediaQueryData?> rootMedia = ValueNotifier<MediaQueryData?>(
+  null,
+);
+
 class DuoGalleryApp extends StatelessWidget {
   const DuoGalleryApp({super.key});
 
@@ -23,7 +28,28 @@ class DuoGalleryApp extends StatelessWidget {
       // DuoScope feeds the native bridge into the tree; DuoDisplayFeatures
       // republishes the fold so every route below avoids it on its own.
       builder: (context, child) => DuoScope(
-        child: DuoDisplayFeatures(child: child ?? const SizedBox.shrink()),
+        child: DuoDisplayFeatures(
+          child: Builder(
+            builder: (context) {
+              final media = MediaQuery.of(context);
+              rootMedia.value = media;
+              final duo = DuoScope.of(context);
+              // Printed on every change so the state can be read from the
+              // simulator log without touching the screen.
+              debugPrint(
+                'DUO-ENV size=${media.size.width.round()}x${media.size.height.round()} '
+                'padding=${_insets(media.padding)} viewPadding=${_insets(media.viewPadding)} '
+                'classes=${duo.horizontalSizeClass.name}x${duo.verticalSizeClass.name} '
+                'sdk271=${duo.sdk271} edge=${duo.toolbarVerticalEdgeRaw}/${duo.uikitVerticalBarEdgeRaw} '
+                'hinge=${duo.hinge?.status.name}:${duo.hinge?.angleDegrees?.round()} '
+                'divisions=[${duo.divisions.map((r) => '${_rect(r.rect)}${r.active ? '!' : ''}').join('; ')}] '
+                'occlusions=[${duo.occlusions.map((r) => _rect(r.rect)).join('; ')}] '
+                'features=[${media.displayFeatures.map((f) => '${f.type.name}:${_rect(f.bounds)}:${f.state.name}').join('; ')}]',
+              );
+              return child ?? const SizedBox.shrink();
+            },
+          ),
+        ),
       ),
       home: const GalleryHome(),
     );
@@ -242,6 +268,7 @@ class _BridgePane extends StatelessWidget {
     final classes = DuoSizeClasses.of(context);
     final edge = duo.barEdgeFor(Directionality.of(context));
     final fold = duo.activeFold;
+    final media = MediaQuery.of(context);
 
     return ListView(
       padding: const EdgeInsets.all(20),
@@ -287,6 +314,50 @@ class _BridgePane extends StatelessWidget {
               : '${duo.hinge!.status.name} · ${duo.hinge!.angleDegrees?.round() ?? '—'}°',
         ),
         _Row(label: 'Vertical bar edge', value: edge.name),
+        _Row(
+          label: 'Raw edge (SwiftUI)',
+          value: duo.toolbarVerticalEdgeRaw ?? '—',
+        ),
+        _Row(
+          label: 'Raw edge (UIKit)',
+          value: duo.uikitVerticalBarEdgeRaw ?? '—',
+        ),
+        _Row(
+          label: 'Window',
+          value:
+              '${media.size.width.round()} × ${media.size.height.round()} pt',
+        ),
+        _Row(
+          label: 'root padding',
+          value: rootMedia.value == null
+              ? '—'
+              : _insets(rootMedia.value!.padding),
+        ),
+        _Row(
+          label: 'root viewPadding',
+          value: rootMedia.value == null
+              ? '—'
+              : _insets(rootMedia.value!.viewPadding),
+        ),
+        _Row(
+          label: 'divisions',
+          value: duo.divisions
+              .map((r) => '${_rect(r.rect)}${r.active ? ' active' : ''}')
+              .join('; '),
+        ),
+        _Row(
+          label: 'occlusions',
+          value: duo.occlusions.map((r) => _rect(r.rect)).join('; '),
+        ),
+        _Row(
+          label: 'displayFeatures',
+          value: media.displayFeatures
+              .map(
+                (f) =>
+                    '${f.type.name} ${f.bounds.left.round()}..${f.bounds.right.round()} ${f.state.name}',
+              )
+              .join('; '),
+        ),
         const SizedBox(height: 24),
         FilledButton.tonal(
           onPressed: () => showDuoDialog<void>(
@@ -304,6 +375,12 @@ class _BridgePane extends StatelessWidget {
     );
   }
 }
+
+String _rect(Rect r) =>
+    '${r.left.round()},${r.top.round()} ${r.width.round()}×${r.height.round()}';
+
+String _insets(EdgeInsets i) =>
+    'L${i.left.round()} T${i.top.round()} R${i.right.round()} B${i.bottom.round()}';
 
 class _Row extends StatelessWidget {
   const _Row({required this.label, required this.value});

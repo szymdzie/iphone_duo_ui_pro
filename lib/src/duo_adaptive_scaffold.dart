@@ -171,6 +171,10 @@ class DuoAdaptiveScaffold extends StatefulWidget {
   /// Width of the vertical bar, including padding.
   static const double barWidth = 64;
 
+  /// How many top actions stay in the horizontal app bar; the rest, and the
+  /// bottom actions when a tab bar is shown, go to the overflow menu.
+  static const int maxInlineActions = 3;
+
   /// A safe-area inset at least this wide on the bar edge is treated as the
   /// system column (status bar and camera); the bar then moves into it.
   static const double minSystemColumnWidth = 56;
@@ -474,10 +478,13 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
       child: Directionality(
         textDirection: appDirection,
         // The bar owns the inset on its edge; the content keeps the others.
+        // The bottom inset stays in MediaQuery instead of clipping the content:
+        // scroll views run to the edge and pad their own content, as on iOS.
         child: inSystemColumn
             ? SafeArea(
                 left: edge != DuoBarEdge.left,
                 right: edge != DuoBarEdge.right,
+                bottom: false,
                 child: content,
               )
             : content,
@@ -497,7 +504,7 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
 
     return Scaffold(
       backgroundColor: widget.backgroundColor,
-      body: inSystemColumn ? row : SafeArea(child: row),
+      body: inSystemColumn ? row : SafeArea(bottom: false, child: row),
     );
   }
 
@@ -506,13 +513,26 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
     final showTabs = tabs.length >= 2;
     final leading = widget.leading;
     final prominentAction = widget.prominentAction;
-    final bottomBar = widget.bottomActions.isEmpty
+
+    // One bar at the bottom, never two. With tabs the bottom belongs to the tab
+    // bar, so the bottom actions join the overflow menu of the top bar; without
+    // tabs they keep their own toolbar row, as on iOS.
+    final inline = <DuoBarAction>[];
+    final overflow = <DuoBarAction>[];
+    final ranked = [...widget.topActions]
+      ..sort((a, b) => b.priority.index.compareTo(a.priority.index));
+    final kept = ranked.take(DuoAdaptiveScaffold.maxInlineActions).toSet();
+    for (final action in widget.topActions) {
+      (kept.contains(action) ? inline : overflow).add(action);
+    }
+    if (showTabs) overflow.addAll(widget.bottomActions);
+
+    final bottomBar = showTabs || widget.bottomActions.isEmpty
         ? null
         : Material(
             color: Theme.of(context).colorScheme.surfaceContainer,
             child: SafeArea(
               top: false,
-              bottom: !showTabs,
               child: SizedBox(
                 height: 56,
                 child: Row(
@@ -526,26 +546,19 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
             ),
           );
 
-    final bottomChildren = <Widget>[];
-    if (bottomBar != null) bottomChildren.add(bottomBar);
-    if (showTabs) {
-      bottomChildren.add(
-        NavigationBar(
-          selectedIndex: widget.selectedTabIndex.clamp(0, tabs.length - 1),
-          onDestinationSelected: widget.onTabSelected,
-          destinations: [
-            for (final tab in tabs)
-              NavigationDestination(
-                icon: _withBadge(Icon(tab.icon), tab.badgeCount),
-                label: tab.label,
-              ),
-          ],
-        ),
-      );
-    }
-    final bottomNavigation = bottomChildren.isEmpty
-        ? null
-        : Column(mainAxisSize: MainAxisSize.min, children: bottomChildren);
+    final Widget? bottomNavigation = showTabs
+        ? NavigationBar(
+            selectedIndex: widget.selectedTabIndex.clamp(0, tabs.length - 1),
+            onDestinationSelected: widget.onTabSelected,
+            destinations: [
+              for (final tab in tabs)
+                NavigationDestination(
+                  icon: _withBadge(Icon(tab.icon), tab.badgeCount),
+                  label: tab.label,
+                ),
+            ],
+          )
+        : bottomBar;
 
     return Scaffold(
       backgroundColor: widget.backgroundColor,
@@ -555,13 +568,16 @@ class _DuoAdaptiveScaffoldState extends State<DuoAdaptiveScaffold> {
         actions: [
           for (final action in widget.textActions)
             TextButton(onPressed: action.onPressed, child: Text(action.label)),
-          for (final action in widget.topActions) _DuoBarButton(action: action),
+          for (final action in inline) _DuoBarButton(action: action),
           if (prominentAction != null && widget.floatingActionButton == null)
             _DuoBarButton(action: prominentAction, prominent: true),
+          if (overflow.isNotEmpty) _DuoOverflowButton(actions: overflow),
           const SizedBox(width: 8),
         ],
       ),
-      body: body,
+      // Keep the content clear of the side insets (the Dynamic Island in
+      // landscape); top and bottom stay with the bars and the scroll views.
+      body: SafeArea(top: false, bottom: false, child: body),
       floatingActionButton: widget.floatingActionButton,
       bottomNavigationBar: bottomNavigation,
     );

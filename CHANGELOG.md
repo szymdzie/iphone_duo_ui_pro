@@ -1,3 +1,19 @@
+## 0.2.1
+
+Fixes found on the iPhone Duo and iPhone 18 Pro simulators.
+
+* `DuoAdaptiveScaffold`, horizontal layout: **one bar at the bottom, never two.** With a tab bar the
+  bottom actions move to the overflow menu of the app bar; without tabs they keep a single toolbar
+  row. The app bar keeps up to `maxInlineActions` (3) top actions, by priority, and overflows the rest.
+* `DuoAdaptiveScaffold`: the body is no longer clipped at the bottom safe-area inset. It runs to the
+  edge and leaves the inset in `MediaQuery`, so scroll views pad their own content, as on iOS. The
+  horizontal layout also keeps the body clear of the side insets (the Dynamic Island in landscape).
+* `FoldAlignedGrid` adds the safe area to its scroll padding — an explicit `padding` had switched off
+  the one `GridView` adds by itself, so the last row could end up under the home indicator.
+* The status bar axis is exact: 143.5 px at 3x (47.83 pt), identical on both displays.
+* Example: launch options (`tab`, `scroll_end`) read from `tmp/duo_launch.txt` in the app container,
+  for screenshots without touching the simulator.
+
 ## 0.2.0
 
 Verified on the iPhone Duo simulator (iOS 27.1, Xcode 27.1).

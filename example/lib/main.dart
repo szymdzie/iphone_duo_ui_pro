@@ -4,12 +4,31 @@
 // react: the navigation moves into the vertical bar, the panes split around the
 // fold, the grid keeps an even number of columns, and dialogs step aside.
 
+import 'dart:io' show Directory, File;
+
 import 'package:flutter/material.dart';
 import 'package:iphone_duo_ui_pro/iphone_duo_ui_pro.dart';
 
 void main() => runApp(const DuoGalleryApp());
 
 const Color _seed = Color(0xFF0F6079);
+
+/// Launch options for screenshots and Device Hub checks, read from
+/// `<app data container>/tmp/duo_launch.txt`, e.g. `tab=1;scroll_end=1`.
+/// Write it from the host with `xcrun simctl get_app_container <udid> <bundle id> data`.
+final Map<String, String> launchOptions = () {
+  try {
+    final file = File('${Directory.systemTemp.path}/duo_launch.txt');
+    if (!file.existsSync()) return const <String, String>{};
+    return <String, String>{
+      for (final part in file.readAsStringSync().trim().split(';'))
+        if (part.contains('='))
+          part.split('=')[0].trim(): part.split('=')[1].trim(),
+    };
+  } on Object {
+    return const <String, String>{};
+  }
+}();
 
 /// MediaQuery as seen above the scaffold (before SafeArea consumes it).
 final ValueNotifier<MediaQueryData?> rootMedia = ValueNotifier<MediaQueryData?>(
@@ -64,7 +83,7 @@ class GalleryHome extends StatefulWidget {
 }
 
 class _GalleryHomeState extends State<GalleryHome> {
-  int _tab = 0;
+  int _tab = (int.tryParse(launchOptions['tab'] ?? '') ?? 0).clamp(0, 2);
   int _selected = 0;
   int _unread = 3;
 
@@ -219,12 +238,42 @@ class _DetailPane extends StatelessWidget {
 }
 
 /// A grid whose columns stay symmetric around the fold.
-class _GridPane extends StatelessWidget {
+class _GridPane extends StatefulWidget {
   const _GridPane();
+
+  @override
+  State<_GridPane> createState() => _GridPaneState();
+}
+
+class _GridPaneState extends State<_GridPane> {
+  final ScrollController _controller = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    // `scroll_end=1` in the launch options jumps to the end of the grid, to
+    // check the bottom inset without touching the simulator.
+    if (launchOptions['scroll_end'] == '1') {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Future<void>.delayed(const Duration(milliseconds: 600), () {
+          if (_controller.hasClients) {
+            _controller.jumpTo(_controller.position.maxScrollExtent);
+          }
+        });
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return FoldAlignedGrid(
+      controller: _controller,
       itemCount: 36,
       tileHeight: 104,
       minTileWidth: 120,

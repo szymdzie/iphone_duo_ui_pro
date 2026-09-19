@@ -113,6 +113,11 @@ above the home indicator, and centres its items on the status bar axis, 48 pt fr
 is not inset twice. Without a system column — a regular iPhone, a test — the bar keeps its own 64 pt
 inside the safe area.
 
+On a regular iPhone the scaffold falls back to an app bar and a tab bar — one bar at the bottom,
+never two: with tabs, the bottom actions move into the app bar's overflow menu. In both layouts the
+body runs to the bottom edge and leaves the inset in `MediaQuery`, so scroll views pad their own
+content the way they do on iOS.
+
 Two more details worth knowing. A floating action button is only shown in the horizontal layout — in the
 vertical bar its role is taken by `prominentAction`, which is why the scaffold asserts you passed
 one. And the body travels between layouts under a `GlobalKey`, so scroll offsets and text fields
@@ -199,7 +204,7 @@ await tester.pumpWidget(
 );
 ```
 
-The package ships 30 tests built this way, covering both poses, RTL, Split View halves, overflow
+The package ships 34 tests built this way, covering both poses, RTL, Split View halves, overflow
 priorities and state preservation across layout switches.
 
 ## Configurations at a glance

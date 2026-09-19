@@ -534,6 +534,29 @@ void main() {
         expect(lefts.length.isEven, isTrue);
       },
     );
+
+    testWidgets('the grid pads its content by the safe area it scrolls under', (
+      tester,
+    ) async {
+      setLogicalSize(tester, outerPortrait);
+      await tester.pumpWidget(
+        MaterialApp(
+          home: MediaQuery(
+            data: const MediaQueryData(
+              size: outerPortrait,
+              padding: EdgeInsets.only(bottom: 34),
+            ),
+            child: FoldAlignedGrid(
+              itemCount: 40,
+              tileHeight: 100,
+              itemBuilder: (context, index) => Text('tile $index'),
+            ),
+          ),
+        ),
+      );
+      final grid = tester.widget<GridView>(find.byType(GridView));
+      expect(grid.padding, const EdgeInsets.only(top: 16, bottom: 16 + 34));
+    });
   });
 
   group('DuoAdaptiveScaffold', () {
@@ -855,5 +878,107 @@ void main() {
       expect(add.top, greaterThanOrEqualTo(120));
       expect(add.top, lessThan(170));
     });
+
+    testWidgets(
+      'horizontal layout with tabs: one bottom bar, bottom actions in the overflow menu',
+      (tester) async {
+        setLogicalSize(tester, const Size(402, 874));
+        await tester.pumpWidget(
+          duoApp(
+            DuoEnvironment.unavailable,
+            home: DuoAdaptiveScaffold(
+              title: 'Library',
+              bottomActions: [
+                DuoBarAction(
+                  icon: Icons.tune,
+                  label: 'Controls',
+                  onPressed: () {},
+                ),
+              ],
+              tabs: const [
+                DuoTab(icon: Icons.photo, label: 'Library'),
+                DuoTab(icon: Icons.grid_view, label: 'Grid'),
+              ],
+              body: const SizedBox.expand(),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(find.byType(NavigationBar), findsOneWidget);
+        // No second row above the tab bar: the action is not on screen until the menu opens.
+        expect(find.byTooltip('Controls'), findsNothing);
+        await tester.tap(find.byIcon(Icons.more_horiz));
+        await tester.pumpAndSettle();
+        expect(find.text('Controls'), findsOneWidget);
+      },
+    );
+
+    testWidgets('horizontal layout without tabs keeps a single toolbar row', (
+      tester,
+    ) async {
+      setLogicalSize(tester, const Size(402, 874));
+      await tester.pumpWidget(
+        duoApp(
+          DuoEnvironment.unavailable,
+          home: DuoAdaptiveScaffold(
+            title: 'Library',
+            bottomActions: [
+              DuoBarAction(
+                icon: Icons.tune,
+                label: 'Controls',
+                onPressed: () {},
+              ),
+            ],
+            body: const SizedBox.expand(),
+          ),
+        ),
+      );
+      await tester.pumpAndSettle();
+
+      expect(find.byType(NavigationBar), findsNothing);
+      expect(find.byTooltip('Controls'), findsOneWidget);
+    });
+
+    testWidgets(
+      'vertical layout: the body runs to the bottom edge and keeps the inset for scroll views',
+      (tester) async {
+        setLogicalSize(tester, outerPortrait);
+        const environment = DuoEnvironment(
+          isAvailable: true,
+          sdk271: true,
+          size: outerPortrait,
+          toolbarVerticalEdgeRaw: 'Optional(SwiftUI.HorizontalEdge.trailing)',
+          occlusions: outerOcclusions,
+          hinge: DuoHinge(status: DuoHingeStatus.closed, angleDegrees: 0),
+        );
+        late EdgeInsets insideBody;
+        await tester.pumpWidget(
+          duoApp(
+            environment,
+            home: withDuoInsets(
+              outerPortrait,
+              DuoAdaptiveScaffold(
+                prominentAction: DuoBarAction(
+                  icon: Icons.add,
+                  label: 'Add',
+                  onPressed: () {},
+                ),
+                body: Builder(
+                  builder: (context) {
+                    insideBody = MediaQuery.paddingOf(context);
+                    return const SizedBox.expand(key: Key('body'));
+                  },
+                ),
+              ),
+            ),
+          ),
+        );
+        await tester.pumpAndSettle();
+
+        expect(tester.getRect(find.byKey(const Key('body'))).bottom, 678);
+        expect(insideBody.bottom, homeIndicator);
+      },
+    );
   });
 }

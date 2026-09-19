@@ -326,9 +326,16 @@ class _FoldAlignedGridState extends State<FoldAlignedGrid> {
       }
     }
 
+    // An explicit padding switches off the safe-area padding a scroll view adds
+    // on its own, so add it back: the grid scrolls under the home indicator and
+    // its last row still comes to rest above it.
+    final safeArea = MediaQuery.paddingOf(context);
     return GridView.builder(
       controller: widget.controller,
-      padding: EdgeInsets.symmetric(vertical: widget.outerPadding),
+      padding: EdgeInsets.only(
+        top: widget.outerPadding + safeArea.top,
+        bottom: widget.outerPadding + safeArea.bottom,
+      ),
       gridDelegate: FoldAlignedGridDelegate(
         minTileWidth: widget.minTileWidth,
         tileHeight: widget.tileHeight,

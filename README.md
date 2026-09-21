@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/hero.png" alt="iphone_duo_ui_pro - fold-aware Flutter widgets for iPhone Duo" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/hero.png" alt="iphone_duo_ui_pro - fold-aware Flutter widgets for iPhone Duo" width="100%">
 
 [![pub package](https://img.shields.io/pub/v/iphone_duo_ui_pro.svg)](https://pub.dev/packages/iphone_duo_ui_pro)
 [![license: MIT](https://img.shields.io/badge/license-MIT-0F6079.svg)](https://github.com/szymdzie/iphone_duo_ui_pro/blob/main/LICENSE)
@@ -17,14 +17,14 @@ into layout.
 flutter pub add iphone_duo_ui_pro
 ```
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/screenshots/fold.gif" alt="The example on the iPhone Duo simulator: the panes split on the fold, a dialog steps aside, the grid mirrors around the hinge, the bridge reports the angle" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/screenshots/fold.gif" alt="The example on the iPhone Duo simulator: the panes split on the fold, a dialog steps aside, the grid mirrors around the hinge, the bridge reports the angle" width="100%">
 
 The example on the iPhone Duo simulator (iOS 27.1). The angle in the caption is the one the bridge
 reported at that frame.
 
 ## Two modes for the bars
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/two-modes.png" alt="Two modes for the bars: custom navigation drawn by Flutter (DuoAdaptiveScaffold) or official Liquid Glass drawn by UIKit (DuoGlassScaffold), fed by the same actions and tabs" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/two-modes.png" alt="Two modes for the bars: custom navigation drawn by Flutter (DuoAdaptiveScaffold) or official Liquid Glass drawn by UIKit (DuoGlassScaffold), fed by the same actions and tabs" width="100%">
 
 The content widgets are the same either way. For the bars you pick a mode, per app or per screen:
 
@@ -74,7 +74,7 @@ the same code keeps working on a regular iPhone, on Android and in tests.
 
 ## Two panes, and dialogs that step aside
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/two-pane.png" alt="FoldAwareTwoPane in compact, flat and book poses, with a dialog anchored to the trailing half" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/two-pane.png" alt="FoldAwareTwoPane in compact, flat and book poses, with a dialog anchored to the trailing half" width="100%">
 
 ```dart
 FoldAwareTwoPane(
@@ -101,7 +101,7 @@ current fold would be captured by the route and end up in the wrong half.
 
 ## Mode 1: custom navigation
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/vertical-bar.png" alt="DuoAdaptiveScaffold: horizontal bars on the inner display in portrait, a vertical bar on the outer display" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/vertical-bar.png" alt="DuoAdaptiveScaffold: horizontal bars on the inner display in portrait, a vertical bar on the outer display" width="100%">
 
 On the outer display, and on the inner display in landscape, the system moves toolbars, navigation
 and tab bars to the side. `DuoAdaptiveScaffold` follows: the same actions, in the order Apple
@@ -149,7 +149,7 @@ survive opening, closing and rotating the device.
 
 ## Mode 2: official Liquid Glass
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/liquid-glass.png" alt="iphone_duo_ui_pro_glass: real UIKit Liquid Glass capsules in the iPhone Duo vertical bar, a fold-aligned Flutter grid underneath" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/liquid-glass.png" alt="iphone_duo_ui_pro_glass: real UIKit Liquid Glass capsules in the iPhone Duo vertical bar, a fold-aligned Flutter grid underneath" width="100%">
 
 Mode 1 draws its bars in Flutter, which keeps this package free of dependencies and identical on
 every platform. If you want the system's own material instead, add the companion:
@@ -189,11 +189,11 @@ MaterialApp(
 ```
 
 <p>
-  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/packages/iphone_duo_ui_pro_glass/screenshots/glass-inner.gif" alt="Inner display folding and unfolding with native glass capsules in the vertical bar" width="62%">
-  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/packages/iphone_duo_ui_pro_glass/screenshots/glass-cover.gif" alt="Cover display: a pushed page gets the system back button in the glass bar" width="36%">
+  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/packages/iphone_duo_ui_pro_glass/screenshots/glass-inner.gif" alt="Inner display folding and unfolding with native glass capsules in the vertical bar" width="62%">
+  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/packages/iphone_duo_ui_pro_glass/screenshots/glass-cover.gif" alt="Cover display: a pushed page gets the system back button in the glass bar" width="36%">
 </p>
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/packages/iphone_duo_ui_pro_glass/screenshots/two-modes.gif" alt="The same screen switching between custom navigation and Liquid Glass" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/packages/iphone_duo_ui_pro_glass/screenshots/two-modes.gif" alt="The same screen switching between custom navigation and Liquid Glass" width="100%">
 
 The companion's example switches between the two modes at run time, above. `DuoBarAction` and
 `DuoTab` carry an optional `sfSymbol` for exactly this: the same values feed
@@ -202,7 +202,7 @@ the field.
 
 ## Grids aligned to the hinge
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/edd5f0cb79eea70c4f20a4bb15eaeda20c7df78e/doc/img/fold-aligned-grid.png" alt="A plain grid leaves a tile in the fold; FoldAlignedGrid mirrors columns around it" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/fold-aligned-grid.png" alt="A plain grid leaves a tile in the fold; FoldAlignedGrid mirrors columns around it" width="100%">
 
 An even column count is the usual advice, and it is enough when the content area is centred on the
 fold. Add a vertical bar on one side and the middle gap misses the hinge. `FoldAlignedGrid` plans

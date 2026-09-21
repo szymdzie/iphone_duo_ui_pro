@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/liquid-glass.png" alt="iphone_duo_ui_pro_glass - official Liquid Glass bars on iPhone Duo, fold-aware Flutter content underneath" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/liquid-glass.png" alt="iphone_duo_ui_pro_glass - official Liquid Glass bars on iPhone Duo, fold-aware Flutter content underneath" width="100%">
 
 [![pub package](https://img.shields.io/pub/v/iphone_duo_ui_pro_glass.svg)](https://pub.dev/packages/iphone_duo_ui_pro_glass)
 [![license: MIT](https://img.shields.io/badge/license-MIT-0F6079.svg)](https://github.com/szymdzie/iphone_duo_ui_pro/blob/main/LICENSE)
@@ -21,7 +21,7 @@ flutter pub add iphone_duo_ui_pro_glass
 
 ## Two modes for the bars
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/doc/img/two-modes.png" alt="Two modes for the bars: custom navigation drawn by Flutter (DuoAdaptiveScaffold) or official Liquid Glass drawn by UIKit (DuoGlassScaffold), fed by the same actions and tabs" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/doc/img/two-modes.png" alt="Two modes for the bars: custom navigation drawn by Flutter (DuoAdaptiveScaffold) or official Liquid Glass drawn by UIKit (DuoGlassScaffold), fed by the same actions and tabs" width="100%">
 
 `iphone_duo_ui_pro` has two modes for the bars, and this package is the second one:
 
@@ -36,13 +36,13 @@ The same `DuoBarAction` and `DuoTab` values feed both, per app or per screen. Th
 stays free of this dependency; add the companion only if you want UIKit's bars. The example
 switches between the modes at run time:
 
-<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/packages/iphone_duo_ui_pro_glass/screenshots/two-modes.gif" alt="The same screen switching between custom navigation and Liquid Glass" width="100%">
+<img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/packages/iphone_duo_ui_pro_glass/screenshots/two-modes.gif" alt="The same screen switching between custom navigation and Liquid Glass" width="100%">
 
 ## On iPhone Duo
 
 <p>
-  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/packages/iphone_duo_ui_pro_glass/screenshots/glass-inner.gif" alt="Inner display of the iPhone Duo simulator folding and unfolding: glass capsules in the vertical bar, panes and grid realigning around the fold" width="62%">
-  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/main/packages/iphone_duo_ui_pro_glass/screenshots/glass-cover.gif" alt="Cover display: a pushed page gets the system back button in the glass bar" width="36%">
+  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/packages/iphone_duo_ui_pro_glass/screenshots/glass-inner.gif" alt="Inner display of the iPhone Duo simulator folding and unfolding: glass capsules in the vertical bar, panes and grid realigning around the fold" width="62%">
+  <img src="https://raw.githubusercontent.com/szymdzie/iphone_duo_ui_pro/e5007d96df5c918aa3ec3f77c11f1af4f4ecb1f8/packages/iphone_duo_ui_pro_glass/screenshots/glass-cover.gif" alt="Cover display: a pushed page gets the system back button in the glass bar" width="36%">
 </p>
 
 The inner display folding and unfolding, and the cover display with a pushed page. All recordings

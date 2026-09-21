@@ -1,0 +1,111 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root { --teal:#0F6079; --aqua:#6FD8EA; --ink:#EAF2F6; --muted:#9FB0BC; }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html,body { width:1200px; height:630px; overflow:hidden; background:#060B10; }
+  body { font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; color:var(--ink); position:relative; }
+  .bg { position:absolute; inset:0;
+    background:
+      radial-gradient(620px 420px at 86% 8%, rgba(24,183,201,.42), transparent 70%),
+      radial-gradient(640px 460px at 98% 70%, rgba(122,92,255,.40), transparent 70%),
+      radial-gradient(520px 360px at 62% 108%, rgba(255,159,69,.26), transparent 70%),
+      radial-gradient(520px 420px at -6% 104%, rgba(15,96,121,.55), transparent 70%),
+      linear-gradient(180deg,#070C12 0%, #060A0F 100%); }
+  .grain { position:absolute; inset:0; opacity:.05;
+    background-image:radial-gradient(rgba(255,255,255,.9) .6px, transparent .7px); background-size:5px 5px; }
+  .rule { position:absolute; left:0; top:0; bottom:0; width:6px; background:var(--teal); }
+
+  .copy { position:absolute; left:72px; top:50px; width:500px; }
+  .eyebrow { font-family:Menlo, monospace; font-size:17px; color:var(--aqua); letter-spacing:.01em; }
+  h1 { margin-top:16px; font-size:47px; line-height:1.06; font-weight:700; letter-spacing:-.03em; white-space:nowrap; }
+  h1 em { font-style:normal; display:block; color:transparent;
+    background:linear-gradient(92deg,#8FE7F5 0%, #B9A8FF 55%, #FFC58A 100%); -webkit-background-clip:text; background-clip:text; }
+  .lede { margin-top:20px; font-size:18px; line-height:1.52; color:#C5D2DB; width:455px; }
+  .lede b { color:var(--ink); font-weight:600; }
+
+  .apis { margin-top:20px; display:flex; gap:9px; flex-wrap:wrap; }
+  .chip { font-family:Menlo, monospace; font-size:13px; padding:7px 12px; border-radius:999px; color:#DDF6FB;
+    background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.17);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.18); }
+
+  .layers { position:absolute; left:72px; top:388px; width:456px; }
+  .layer { display:flex; align-items:center; justify-content:space-between; height:46px; padding:0 16px; border-radius:14px;
+    font-size:14.5px; color:#E6F1F6; border:1px solid rgba(255,255,255,.16); box-shadow:inset 0 1px 0 rgba(255,255,255,.2); }
+  .layer code { font-family:Menlo, monospace; font-size:12.5px; color:var(--aqua); }
+  .layer.ui { background:linear-gradient(90deg, rgba(111,216,234,.20), rgba(185,168,255,.16)); position:relative; z-index:2;
+    margin-left:14px; margin-right:-14px; backdrop-filter:blur(6px); }
+  .layer.fl { background:rgba(255,255,255,.045); margin-top:-8px; padding-top:6px; height:52px; color:#C5D2DB; }
+  .layer.fl code { color:#B9A8FF; }
+  .install { position:absolute; left:72px; top:496px; font-family:Menlo, monospace; font-size:15.5px; color:#E9FBFF;
+    padding:12px 18px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16);
+    box-shadow:inset 0 1px 0 rgba(255,255,255,.16); }
+  .install span { color:var(--aqua); }
+  .eyebrow .pill { font-family:"Helvetica Neue", Helvetica, Arial, sans-serif; font-size:12px; letter-spacing:.04em;
+    text-transform:uppercase; color:#DDF6FB; margin-left:12px; padding:4px 10px; border-radius:999px;
+    background:rgba(111,216,234,.14); border:1px solid rgba(111,216,234,.38); vertical-align:2px; }
+  .author { position:absolute; left:72px; top:562px; display:flex; align-items:center; gap:14px; }
+  .author img { width:48px; height:48px; border-radius:50%; object-fit:cover; display:block;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,.42), 0 6px 18px rgba(0,0,0,.45); }
+  .author .name { font-size:15.5px; font-weight:600; color:var(--ink); letter-spacing:-.005em; }
+  .author .link { margin-top:3px; font-family:Menlo, monospace; font-size:12.5px; color:var(--aqua); }
+
+  /* the device: a real screenshot of the iPhone Duo simulator, inner display, book pose */
+  .device { position:absolute; left:588px; top:96px; width:548px; height:391.8px; border-radius:30px; background:#0E1319;
+    box-shadow:0 0 0 1.5px rgba(255,255,255,.14), 0 40px 90px rgba(0,0,0,.6), 0 0 120px rgba(24,183,201,.16); }
+  .screen { position:absolute; left:11px; top:11px; width:526px; height:369.8px; border-radius:20px; overflow:hidden; }
+  .screen img { width:100%; height:100%; display:block; }
+  .tick { position:absolute; width:2px; height:9px; background:var(--aqua); left:calc(11px + 526px*0.5005 - 1px); border-radius:1px; }
+  .tick.t { top:-15px; } .tick.b { bottom:-15px; }
+  .foldlabel { position:absolute; top:-35px; left:calc(11px + 526px*0.5005 - 60px); width:120px; text-align:center;
+    font-family:Menlo, monospace; font-size:11.5px; color:var(--aqua); }
+
+  /* loupe over the native capsules */
+  .loupe { position:absolute; left:944px; top:318px; width:236px; height:236px; border-radius:50%; overflow:hidden;
+    border:2px solid rgba(255,255,255,.62);
+    box-shadow:0 24px 60px rgba(0,0,0,.65), 0 0 0 7px rgba(255,255,255,.06), inset 0 0 30px rgba(0,0,0,.35); }
+  /* screenshot is 951 x 669 pt; magnification 1.5 px/pt; centre on (902, 238) pt */
+  .loupe img { position:absolute; width:calc(951px*1.32); height:calc(669px*1.32);
+    left:calc(118px - 898px*1.32); top:calc(118px - 226px*1.32); }
+  .ring { position:absolute; left:1149px; top:214px; width:62px; height:62px; }
+  .call { position:absolute; font-family:Menlo, monospace; font-size:12px; color:#DDF6FB; white-space:nowrap; }
+  .call b { color:var(--aqua); font-weight:400; }
+  .call.glass { right:26px; top:574px; text-align:right; }
+  .call.flutter { left:600px; top:508px; }
+  .dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--aqua); margin-right:7px; transform:translateY(-1px); }
+  .dot.f { background:#B9A8FF; }
+</style></head>
+<body>
+  <div class="bg"></div><div class="grain"></div><div class="rule"></div>
+
+  <div class="copy">
+    <div class="eyebrow">iphone_duo_ui_pro_glass<span class="pill">optional add-on</span></div>
+    <h1>Official Liquid Glass.<em>Not a look-alike.</em></h1>
+    <p class="lede">The bars are <b>real UIKit views</b>, drawn by iOS itself through
+      adaptive_platform_ui &mdash; in the iPhone Duo vertical bar too. Flutter lays out
+      everything beneath them <b>around the fold</b>.</p>
+    <div class="apis">
+      <span class="chip">UIGlassEffect</span><span class="chip">UITabBar</span><span class="chip">UINavigationBar</span>
+    </div>
+  </div>
+  <div class="layers">
+    <div class="layer ui"><span>Bars &nbsp;·&nbsp; UIKit Liquid Glass</span><code>adaptive_platform_ui</code></div>
+    <div class="layer fl"><span>Content &nbsp;·&nbsp; fold-aware Flutter</span><code>iphone_duo_ui_pro</code></div>
+  </div>
+  <div class="install"><span>$</span> flutter pub add iphone_duo_ui_pro_glass</div>
+  <div class="author">
+    <img src="../author.jpg" alt="">
+    <div><div class="name">Szymon Dziedzic</div><div class="link">linkedin.com/in/dziedzic-szymon</div></div>
+  </div>
+
+  <div class="device">
+    <div class="foldlabel">fold · 40 pt</div>
+    <div class="tick t"></div><div class="tick b"></div>
+    <div class="screen"><img src="inner.jpg"></div>
+  </div>
+
+  <div class="loupe"><img src="inner.jpg"></div>
+
+  <div class="call flutter"><span class="dot f"></span>Flutter · <b>FoldAlignedGrid</b>, mirrored at the hinge</div>
+  <div class="call glass"><span class="dot"></span>UIKit · <b>UIGlassEffect</b>, magnified 2.4×</div>
+</body></html>

@@ -1,0 +1,4 @@
+# Inside this repository the core package comes from the repository root.
+dependency_overrides:
+  iphone_duo_ui_pro:
+    path: ../../..

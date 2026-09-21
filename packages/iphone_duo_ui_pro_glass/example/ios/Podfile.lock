@@ -1,0 +1,34 @@
+PODS:
+  - adaptive_platform_ui (0.1.0):
+    - Flutter
+  - Flutter (1.0.0)
+  - foldable (1.0.4):
+    - Flutter
+  - iphone_duo_ui_pro (0.2.1):
+    - Flutter
+
+DEPENDENCIES:
+  - adaptive_platform_ui (from `.symlinks/plugins/adaptive_platform_ui/ios`)
+  - Flutter (from `Flutter`)
+  - foldable (from `.symlinks/plugins/foldable/ios`)
+  - iphone_duo_ui_pro (from `.symlinks/plugins/iphone_duo_ui_pro/ios`)
+
+EXTERNAL SOURCES:
+  adaptive_platform_ui:
+    :path: ".symlinks/plugins/adaptive_platform_ui/ios"
+  Flutter:
+    :path: Flutter
+  foldable:
+    :path: ".symlinks/plugins/foldable/ios"
+  iphone_duo_ui_pro:
+    :path: ".symlinks/plugins/iphone_duo_ui_pro/ios"
+
+SPEC CHECKSUMS:
+  adaptive_platform_ui: df7a9b2e8063dd0e8eb0fa0bcc9467780f608f86
+  Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
+  foldable: d1eb10388f54d3f75ca2865782717374ab458290
+  iphone_duo_ui_pro: d342f967a8f6e8d3bc09e47e8214e1df0f1db6c5
+
+PODFILE CHECKSUM: 2ab961ca1b9a7179a09b1f05ed26df36616b4fcf
+
+COCOAPODS: 1.16.2

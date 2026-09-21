@@ -1,0 +1,14 @@
+.DS_Store
+.dart_tool/
+.idea/
+*.iml
+build/
+pubspec.lock
+example/.dart_tool/
+example/.idea/
+example/build/
+example/ios/Pods/
+example/ios/.symlinks/
+example/ios/Flutter/ephemeral/
+example/*.iml
+example/pubspec_overrides.yaml

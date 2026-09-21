@@ -4,6 +4,7 @@
 build/
 pubspec.lock
 doc/
+tool/
 .github/
 ios/Pods/
 ios/.symlinks/
@@ -13,3 +14,9 @@ example/ios/Pods/
 example/ios/.symlinks/
 example/ios/Flutter/ephemeral/
 example/*.iml
+
+# Companion packages publish on their own, from a copy outside the repository
+# (tool/publish_glass.sh): pub applies this file to nested packages too, so in
+# place they would come out empty, and any rule that let them through would put
+# them into this archive as well.
+packages/

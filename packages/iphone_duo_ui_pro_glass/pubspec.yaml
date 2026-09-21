@@ -1,0 +1,43 @@
+name: iphone_duo_ui_pro_glass
+description: >-
+  The Liquid Glass mode of iphone_duo_ui_pro: official UIKit bars, glass
+  capsules in the iPhone Duo vertical bar, through adaptive_platform_ui, over
+  fold-aware Flutter content.
+version: 0.1.0
+repository: https://github.com/szymdzie/iphone_duo_ui_pro/tree/main/packages/iphone_duo_ui_pro_glass
+issue_tracker: https://github.com/szymdzie/iphone_duo_ui_pro/issues
+# The first screenshot is the thumbnail pub.dev shows in search results.
+screenshots:
+  - description: 'Official Liquid Glass on iPhone Duo: UIKit capsules in the vertical bar, a fold-aligned Flutter grid underneath. Real simulator capture.'
+    path: screenshots/liquid-glass.png
+  - description: 'Two modes for the bars, one set of actions: custom navigation drawn by Flutter, or official Liquid Glass drawn by UIKit.'
+    path: screenshots/two-modes.png
+  - description: 'DuoGlassScaffold in the book pose: native glass bars on the right, FoldAlignedGrid mirrored around the hinge.'
+    path: screenshots/vertical-bar-glass.png
+  - description: 'Inner display while the simulator folds and unfolds: the bars stay UIKit, the content realigns around the fold.'
+    path: screenshots/glass-inner.gif
+  - description: 'Cover display: a pushed page gets the system back button in the glass bar, and items that do not fit move into the overflow menu.'
+    path: screenshots/glass-cover.gif
+  - description: 'The example switching between the two modes at run time: the same actions and tabs, drawn by UIKit or by Flutter.'
+    path: screenshots/two-modes.gif
+topics:
+  - iphone-duo
+  - liquid-glass
+  - foldable
+  - ios
+  - cupertino
+
+environment:
+  sdk: ^3.10.0
+  flutter: ">=3.38.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  adaptive_platform_ui: ^1.0.1
+  iphone_duo_ui_pro: ^0.3.0
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0

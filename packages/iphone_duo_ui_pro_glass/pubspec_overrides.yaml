@@ -1,0 +1,5 @@
+# Work inside this repository resolves the core package from the repository
+# root. pub leaves this file out of the published archive.
+dependency_overrides:
+  iphone_duo_ui_pro:
+    path: ../..

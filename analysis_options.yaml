@@ -1,6 +1,9 @@
 include: package:flutter_lints/flutter.yaml
 
 analyzer:
+  # The companion has dependencies of its own and is analyzed in its own CI job.
+  exclude:
+    - packages/**
   language:
     strict-casts: true
     strict-inference: true

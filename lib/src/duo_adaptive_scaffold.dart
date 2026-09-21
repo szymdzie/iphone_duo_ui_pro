@@ -56,6 +56,7 @@ class DuoBarAction {
     required this.onPressed,
     this.priority = DuoVisibilityPriority.automatic,
     this.badgeCount,
+    this.sfSymbol,
   });
 
   /// Symbol shown in the bar.
@@ -72,6 +73,11 @@ class DuoBarAction {
 
   /// A count shown as a badge instead of text next to the icon.
   final int? badgeCount;
+
+  /// SF Symbol name, such as `square.and.pencil`, for renderers that draw the
+  /// action with UIKit (the `iphone_duo_ui_pro_glass` companion). This
+  /// package's own widgets draw [icon] and ignore it.
+  final String? sfSymbol;
 }
 
 /// A text-only action such as "Edit" or "Select". It stays in the horizontal header.
@@ -91,7 +97,13 @@ class DuoTextAction {
 @immutable
 class DuoTab {
   /// Creates a tab.
-  const DuoTab({required this.icon, required this.label, this.badgeCount});
+  const DuoTab({
+    required this.icon,
+    required this.label,
+    this.badgeCount,
+    this.sfSymbol,
+    this.selectedSfSymbol,
+  });
 
   /// Symbol shown in the tab bar.
   final IconData icon;
@@ -101,6 +113,15 @@ class DuoTab {
 
   /// A count shown as a badge on the tab.
   final int? badgeCount;
+
+  /// SF Symbol name, such as `photo.on.rectangle`, for renderers that draw the
+  /// tab bar with UIKit (the `iphone_duo_ui_pro_glass` companion). This
+  /// package's own widgets draw [icon] and ignore it.
+  final String? sfSymbol;
+
+  /// SF Symbol for the selected state, usually the `.fill` variant of
+  /// [sfSymbol]. Falls back to [sfSymbol].
+  final String? selectedSfSymbol;
 }
 
 /// The result of planning the vertical bar.
@@ -128,6 +149,12 @@ class DuoVerticalBarPlan {
 }
 
 /// A scaffold that moves its actions and tabs into a vertical bar on iPhone Duo.
+///
+/// This is the custom navigation mode: Flutter draws the bars, so they look the
+/// same on every platform and are yours to restyle. The other mode is official
+/// Liquid Glass: `DuoGlassScaffold` in the companion package
+/// `iphone_duo_ui_pro_glass` takes the same actions and tabs and lets UIKit
+/// draw them.
 ///
 /// In the horizontal layout it renders a regular [AppBar] and [NavigationBar]. In the
 /// vertical layout the same actions sit in a bar on the hardware edge, ordered

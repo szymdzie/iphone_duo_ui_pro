@@ -8,6 +8,12 @@
 /// vertical bar, [FoldAwareTwoPane] and [FoldAlignedGrid] keep content off the
 /// fold.
 ///
+/// The bars come in two modes that take the same [DuoBarAction] and [DuoTab]
+/// values. [DuoAdaptiveScaffold], in this package, is custom navigation: drawn
+/// by Flutter, with no dependencies. `DuoGlassScaffold`, in the optional
+/// companion `iphone_duo_ui_pro_glass`, hands them to UIKit as official Liquid
+/// Glass.
+///
 /// Wrap the app once, then use the widgets anywhere below it:
 ///
 /// ```dart

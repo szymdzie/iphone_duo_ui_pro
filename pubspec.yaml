@@ -1,11 +1,21 @@
 name: iphone_duo_ui_pro
 description: >-
-  Fold-aware Flutter widgets for iPhone Duo: the hinge as a DisplayFeature,
-  vertical bars, size classes, two-pane layouts and fold-aligned grids, fed by
-  a native iOS bridge.
-version: 0.2.1
+  Fold-aware Flutter widgets for iPhone Duo: two-pane layouts, fold-aligned
+  grids, and vertical bars in two modes, custom Flutter navigation or official
+  Liquid Glass.
+version: 0.3.0
 repository: https://github.com/szymdzie/iphone_duo_ui_pro
 issue_tracker: https://github.com/szymdzie/iphone_duo_ui_pro/issues
+# The first screenshot is the thumbnail pub.dev shows in search results.
+screenshots:
+  - description: 'iPhone Duo simulator, half open: FoldAwareTwoPane splits on the fold and DuoAdaptiveScaffold moves navigation into the vertical bar.'
+    path: screenshots/book-pose.png
+  - description: 'Two modes for the bars: custom navigation drawn by Flutter, or official Liquid Glass drawn by UIKit through the optional companion package.'
+    path: screenshots/two-modes.png
+  - description: 'FoldAlignedGrid mirrors its columns around the hinge, so folding only widens the middle gap.'
+    path: screenshots/fold-aligned-grid.png
+  - description: 'The example while the simulator folds and unfolds. The angle in the caption is the one the native bridge reported.'
+    path: screenshots/fold.gif
 topics:
   - foldable
   - ios

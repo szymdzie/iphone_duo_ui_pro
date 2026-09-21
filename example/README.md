@@ -20,8 +20,17 @@ For screenshots and Device Hub checks the app reads `tmp/duo_launch.txt` from it
 
 ```sh
 C=$(xcrun simctl get_app_container booted com.szymondziedzic.iphoneDuoUiProExample data)
-echo "tab=1;scroll_end=1" > "$C/tmp/duo_launch.txt"   # 0 Library, 1 Grid, 2 Bridge
+echo "tab=1;scroll_end=1;remote=1" > "$C/tmp/duo_launch.txt"   # 0 Library, 1 Grid, 2 Bridge
 ```
+
+Taps sent to a simulator in the background never arrive. With `remote=1` in the launch options
+the app also polls `tmp/duo_cmd.txt`, so the host can drive it while Device Hub changes the pose:
+
+```sh
+echo "$(date +%s):tab=1" > "$C/tmp/duo_cmd.txt"   # tab=0…2, select=4, dialog, sheet, back
+```
+
+The part before the colon only has to change, so the same command can be sent twice.
 
 Every environment change is also logged as `DUO-ENV …`, readable with
 `xcrun simctl spawn booted log show --last 30s --predicate 'eventMessage CONTAINS "DUO-ENV"'`.

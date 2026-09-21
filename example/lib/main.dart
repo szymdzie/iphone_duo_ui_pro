@@ -4,6 +4,7 @@
 // react: the navigation moves into the vertical bar, the panes split around the
 // fold, the grid keeps an even number of columns, and dialogs step aside.
 
+import 'dart:async';
 import 'dart:io' show Directory, File;
 
 import 'package:flutter/material.dart';
@@ -14,7 +15,7 @@ void main() => runApp(const DuoGalleryApp());
 const Color _seed = Color(0xFF0F6079);
 
 /// Launch options for screenshots and Device Hub checks, read from
-/// `<app data container>/tmp/duo_launch.txt`, e.g. `tab=1;scroll_end=1`.
+/// `<app data container>/tmp/duo_launch.txt`, e.g. `tab=1;scroll_end=1;remote=1`.
 /// Write it from the host with `xcrun simctl get_app_container <udid> <bundle id> data`.
 final Map<String, String> launchOptions = () {
   try {
@@ -42,6 +43,7 @@ class DuoGalleryApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'iPhone Duo gallery',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(colorSchemeSeed: _seed),
       darkTheme: ThemeData(colorSchemeSeed: _seed, brightness: Brightness.dark),
       // DuoScope feeds the native bridge into the tree; DuoDisplayFeatures
@@ -88,6 +90,61 @@ class _GalleryHomeState extends State<GalleryHome> {
   int _unread = 3;
 
   static const List<String> _titles = <String>['Library', 'Grid', 'Bridge'];
+
+  Timer? _remote;
+  String _lastCommand = '';
+
+  @override
+  void initState() {
+    super.initState();
+    // A remote control for recordings and Device Hub checks: taps sent to a
+    // simulator in the background never arrive, so with `remote=1` in the
+    // launch options the host writes `<counter>:<command>` into
+    // `<app data container>/tmp/duo_cmd.txt`. Commands: tab=1, select=4,
+    // dialog, sheet, back.
+    if (launchOptions['remote'] == '1') {
+      _pollCommand(execute: false); // left over from an earlier run
+      _remote = Timer.periodic(
+        const Duration(milliseconds: 150),
+        (_) => _pollCommand(),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _remote?.cancel();
+    super.dispose();
+  }
+
+  void _pollCommand({bool execute = true}) {
+    try {
+      final file = File('${Directory.systemTemp.path}/duo_cmd.txt');
+      if (!file.existsSync()) return;
+      final raw = file.readAsStringSync().trim();
+      if (raw == _lastCommand || !raw.contains(':')) return;
+      _lastCommand = raw;
+      if (execute && mounted) _run(raw.substring(raw.indexOf(':') + 1));
+    } on Object {
+      // A half-written file: the next poll reads it again.
+    }
+  }
+
+  void _run(String command) {
+    final value = command.contains('=') ? command.split('=')[1] : '';
+    debugPrint('DUO-CMD $command');
+    if (command.startsWith('tab=')) {
+      setState(() => _tab = (int.tryParse(value) ?? 0).clamp(0, 2));
+    } else if (command.startsWith('select=')) {
+      setState(() => _selected = int.tryParse(value) ?? 0);
+    } else if (command == 'dialog') {
+      _openDialog();
+    } else if (command == 'sheet') {
+      _openSheet();
+    } else if (command == 'back') {
+      Navigator.of(context).maybePop();
+    }
+  }
 
   void _openSheet() {
     showDuoModalBottomSheet<void>(

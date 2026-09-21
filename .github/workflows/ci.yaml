@@ -24,3 +24,26 @@ jobs:
           cd example
           flutter pub get
           flutter analyze
+
+  glass-companion:
+    runs-on: macos-latest
+    defaults:
+      run:
+        working-directory: packages/iphone_duo_ui_pro_glass
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.38.7
+      - run: flutter pub get
+      - run: dart format --output=none --set-exit-if-changed .
+      - run: flutter analyze
+      - run: flutter test
+      - name: Validate the archive
+        run: ../../tool/publish_glass.sh --dry-run --local
+      - name: Analyze the example app
+        run: |
+          cd example
+          flutter pub get
+          flutter analyze
